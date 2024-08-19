@@ -3,6 +3,7 @@ import { Login } from "../pages/Login";
 import { DashBoard } from "../component/layout/DashBoard/DashBoard";
 import { NotFound } from "../component/common/NotFound/NotFound";
 import { Unpaid } from "../pages/Accounting/Unpaid";
+import { EstMng } from "../pages/Business/EstMng";
 
 const routers: RouteObject[] = [
     { path: "*", element: <NotFound /> },
@@ -14,6 +15,10 @@ const routers: RouteObject[] = [
             {
                 path: "accounting",
                 children: [{ path: "unpaid.do", element: <Unpaid /> }],
+            },
+            {
+                path: "business",
+                children: [{ path: "estMng.do", element: <EstMng /> }],
             },
         ],
     },
