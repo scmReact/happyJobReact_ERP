@@ -39,6 +39,7 @@ export const NoticeMain = () => {
     const [currentParam, setCurrentParam] = useState<number | undefined>();
 
     useEffect(() => {
+        console.log(search);
         searchNoticeList();
     }, [search]);
 
