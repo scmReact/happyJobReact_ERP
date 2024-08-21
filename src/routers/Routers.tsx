@@ -6,6 +6,7 @@ import { EmpGrade } from "../pages/Employee/EmpGrade";
 import { Unpaid } from "../pages/Accounting/Unpaid";
 import { BizPartner } from "../pages/Business/BizPartner";
 import { EstMng } from "../pages/Business/EstMng";
+import { DailyRevenue } from "../pages/Sales/DailyRevenue";
 
 const routers: RouteObject[] = [
     { path: "*", element: <NotFound /> },
@@ -25,8 +26,13 @@ const routers: RouteObject[] = [
             },
             {
                 path: "business",
-                children: [{ path: "bizPartner.do", element: <BizPartner/> }],
-                children: [{ path: "estMng.do", element: <EstMng /> }],
+                    children: [{ path: "bizPartner.do", element: <BizPartner/> },
+                        { path: "estMng.do", element: <EstMng /> }
+                    ],
+            },
+            {
+                path: "sales",
+                    children:[{path: "dailyRevenue.do", element: <DailyRevenue/>}]
             },
         ],
     },
