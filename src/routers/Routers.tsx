@@ -28,8 +28,10 @@ const routers: RouteObject[] = [
             },
             {
                 path: "business",
-                children: [{ path: "bizPartner.do", element: <BizPartner/> }],
-                children: [{ path: "estMng.do", element: <EstMng /> }],
+                children: [
+                    { path: "bizPartner.do", element: <BizPartner /> },
+                    { path: "estMng.do", element: <EstMng /> },
+                ],
             },
         ],
     },
