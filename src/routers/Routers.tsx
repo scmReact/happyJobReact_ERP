@@ -6,6 +6,7 @@ import { EmpGrade } from "../pages/Employee/EmpGrade";
 import { Unpaid } from "../pages/Accounting/Unpaid";
 import { BizPartner } from "../pages/Business/BizPartner";
 import { EstMng } from "../pages/Business/EstMng";
+import { VctnApprove } from "../pages/Business/VctnApprove";
 
 const routers: RouteObject[] = [
     { path: "*", element: <NotFound /> },
@@ -14,10 +15,12 @@ const routers: RouteObject[] = [
         path: "/react",
         element: <DashBoard />,
         children: [
-            { path: 'employee', 
-                children : [
-                    { path:'empGrade.do', element: <EmpGrade/> }
-                ]
+            {
+                path: "employee",
+                children: [
+                    { path: "empGrade.do", element: <EmpGrade /> },
+                    { path: "vctnApprove.do", element: <VctnApprove /> },
+                ],
             },
             {
                 path: "accounting",
