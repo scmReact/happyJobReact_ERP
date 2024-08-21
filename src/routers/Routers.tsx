@@ -7,6 +7,7 @@ import { Unpaid } from "../pages/Accounting/Unpaid";
 import { BizPartner } from "../pages/Business/BizPartner";
 import { EstMng } from "../pages/Business/EstMng";
 import { VctnApprove } from "../pages/Business/VctnApprove";
+import { VctnCalendar } from "../pages/Employee/VctnCalendar";
 
 const routers: RouteObject[] = [
     { path: "*", element: <NotFound /> },
@@ -20,6 +21,7 @@ const routers: RouteObject[] = [
                 children: [
                     { path: "empGrade.do", element: <EmpGrade /> },
                     { path: "vctnApprove.do", element: <VctnApprove /> },
+                    { path:'vctnCalendar.do', element: <VctnCalendar/>}
                 ],
             },
             {
