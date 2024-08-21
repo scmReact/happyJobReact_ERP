@@ -4,6 +4,7 @@ import { DashBoard } from "../component/layout/DashBoard/DashBoard";
 import { NotFound } from "../component/common/NotFound/NotFound";
 import { EmpGrade } from "../pages/Employee/EmpGrade";
 import { Unpaid } from "../pages/Accounting/Unpaid";
+import { BizPartner } from "../pages/Business/BizPartner";
 import { EstMng } from "../pages/Business/EstMng";
 import { VctnApprove } from "../pages/Business/VctnApprove";
 
@@ -27,6 +28,7 @@ const routers: RouteObject[] = [
             },
             {
                 path: "business",
+                children: [{ path: "bizPartner.do", element: <BizPartner/> }],
                 children: [{ path: "estMng.do", element: <EstMng /> }],
             },
         ],
