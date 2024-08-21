@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { EmpSalePlanSearchStyled } from "./styled";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from "../../../common/Button/Button";
 import axios from "axios";
+import { Button } from "../../../../common/Button/Button";
 
 export interface IEmpSalePlaneListJsonResponse {
   searchManuflist: IEmpSaleCustList[];
