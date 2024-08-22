@@ -24,3 +24,10 @@ export const BusinessApi = {
     estMngInfoSearchJson: "/business/estMngInfoSearchJson.do",
     estApplyJson: "/business/estApplyJson.do",
 };
+
+export const EmployeeApi = {
+    vctnSearchJson: "/employee/vctnApproveListJson.do",
+    vctnDetailJson: "/employee/vctnApproveDetailJson.do",
+    vctnApprovalJson: "/employee/vctnApprovalJson.do",
+    vctnRejectJson: "/employee/vctnRejectJson.do",
+};
