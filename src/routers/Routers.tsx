@@ -30,10 +30,8 @@ const routers: RouteObject[] = [
             {
                 path: "accounting",
                 children: [
-                    { path: "unpaid.do", element: <Unpaid /> },
-                    {
-                        path: "disbApply.do",
-                        element: <DisbApply />,
+                    { path: "unpaid.do", element: <Unpaid /> }
+                    { path: "disbApply.do", element: <DisbApply />,
                     },
                 ],
             },
