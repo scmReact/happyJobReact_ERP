@@ -10,41 +10,46 @@ import { BizPartner } from "../pages/Business/BizPartner";
 import { EstMng } from "../pages/Business/EstMng";
 import { VctnApprove } from "../pages/Business/VctnApprove";
 import { VctnCalendar } from "../pages/Employee/VctnCalendar";
+import { DisbApply } from "../pages/Accounting/DisbApply";
 import { EmpSalePlan } from "../pages/Business/EmpSalePlan/EmpSalePlan";
 import { DailyRevenue } from "../pages/Sales/DailyRevenue";
 
-
 const routers: RouteObject[] = [
-  { path: "*", element: <NotFound /> },
-  { path: "/", element: <Login /> },
-  {
-    path: "/react",
-    element: <DashBoard />,
-    children: [
-      {
-        path: "employee",
+    { path: "*", element: <NotFound /> },
+    { path: "/", element: <Login /> },
+    {
+        path: "/react",
+        element: <DashBoard />,
         children: [
-          { path: "empGrade.do", element: <EmpGrade /> },
-          { path: "vctnApprove.do", element: <VctnApprove /> },
-          { path: "vctnCalendar.do", element: <VctnCalendar /> },
+            {
+                path: "employee",
+                children: [
+                    { path: "empGrade.do", element: <EmpGrade /> },
+                    { path: "vctnApprove.do", element: <VctnApprove /> },
+                    { path: "vctnCalendar.do", element: <VctnCalendar /> },
+                ],
+            },
+            {
+                path: "accounting",
+                children: [
+                    { path: "unpaid.do", element: <Unpaid /> }
+                    { path: "disbApply.do", element: <DisbApply />,
+                    },
+                ],
+            },
+            {
+                path: "business",
+                children: [
+                    { path: "bizPartner.do", element: <BizPartner /> },
+                    { path: "estMng.do", element: <EstMng /> },
+                    { path: "empSalePlan.do", element: <EmpSalePlan /> },
+                ],
+            },
+            {
+                path: "sales",
+                children:[{path: "dailyRevenue.do", element: <DailyRevenue/>}]
+            },
         ],
-      },
-      {
-        path: "accounting",
-        children: [{ path: "unpaid.do", element: <Unpaid /> }],
-      },
-      {
-        path: "business",
-        children: [
-          { path: "bizPartner.do", element: <BizPartner /> },
-          { path: "estMng.do", element: <EstMng /> },
-          { path: "empSalePlan.do", element: <EmpSalePlan /> },
-          
-        ],
-      },
-      {
-        path: "sales",
-            children:[{path: "dailyRevenue.do", element: <DailyRevenue/>}]
       },
     ],
   },
