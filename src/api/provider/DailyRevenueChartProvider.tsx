@@ -1,6 +1,6 @@
 import { FC, createContext, useState } from 'react';
 import { getCurrentDate } from '../../common/CurrentDate';
-import { IDailyRevenueList } from '../../component/page/Sales/DailyRevenue/DailyRevenueChart/DailyRevenueChart';
+import { IDailyRevenueList } from '../../models/interface/Sales/DailyRevenueModel';
 
 interface Context {
     searchKeyword: {};
