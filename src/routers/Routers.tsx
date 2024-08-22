@@ -3,7 +3,6 @@ import { Login } from "../pages/Login";
 import { DashBoard } from "../component/layout/DashBoard/DashBoard";
 import { NotFound } from "../component/common/NotFound/NotFound";
 
-
 import { EmpGrade } from "../pages/Employee/EmpGrade";
 import { Unpaid } from "../pages/Accounting/Unpaid";
 import { BizPartner } from "../pages/Business/BizPartner";
@@ -32,9 +31,8 @@ const routers: RouteObject[] = [
             {
                 path: "accounting",
                 children: [
-                    { path: "unpaid.do", element: <Unpaid /> }
-                    { path: "disbApply.do", element: <DisbApply />,
-                    },
+                    { path: "unpaid.do", element: <Unpaid /> },
+                    { path: "disbApply.do", element: <DisbApply /> },
                 ],
             },
             {
@@ -47,12 +45,10 @@ const routers: RouteObject[] = [
             },
             {
                 path: "sales",
-                children:[{path: "dailyRevenue.do", element: <DailyRevenue/>}]
+                children: [{ path: "dailyRevenue.do", element: <DailyRevenue /> }],
             },
         ],
-      },
-    ],
-  },
+    },
 ];
 
 export const Routers = createBrowserRouter(routers);
