@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 
 export const DailyRevenueChartStyled = styled.div`
-    table{
+    
+    width: 47%;
+    padding: 1%;
+    margin-right: 1%;
+    float: left;
+    
+    .chart{
         margin: 0 auto;
     }
-`
+`  

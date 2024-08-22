@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
 import { Button } from "../../../../common/Button/Button";
 import { DailyRevenueSearchStyled } from "./styled";
-import { DailyRevenueSearchContext } from "../../../../../api/provider/DailyRevenueSearchProvider";
+
 import { getCurrentDate } from "../../../../../common/CurrentDate";
+import { DailyRevenueChartContext } from "../../../../../api/provider/DailyRevenueChartProvider";
 
 
 export interface IDailyRevenueSearchParam {
@@ -13,7 +14,7 @@ export interface IDailyRevenueSearchParam {
 export const DailyRevenueSearch = () => {
     // 기본 날짜와 초기 상태 설정
     const defaultDate = getCurrentDate();
-    const { setSearchKeyword } = useContext(DailyRevenueSearchContext);
+    const { setSearchKeyword } = useContext(DailyRevenueChartContext);
     const [input, setInput] = useState<IDailyRevenueSearchParam>({ date: defaultDate, account: "" });
 
     // 검색 버튼 클릭 시 호출되는 핸들러
