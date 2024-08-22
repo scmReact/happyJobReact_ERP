@@ -1,11 +1,11 @@
 import axios, { AxiosResponse } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { DailyRevenueChartContext } from "../../../../../api/provider/DailyRevenueChartProvider";
-import { IDailyRevenueRes } from "../DailyRevenueChart/DailyRevenueChart";
 import { formatWon } from "../../../../../common/formatWon";
 import { PageNavigate } from "../../../../common/pageNavigation/PageNavigate";
 import { StyledTh, StyledTd } from "../../../../common/styled/StyledTable";
 import { DailyRevenueTopTableStyled } from "./styled";
+import { IDailyRevenueRes } from "../../../../../models/interface/Sales/DailyRevenueModel";
 
 export const DailyRevenueTopTable = ()=>{
     const {searchKeyword , setTotalAmount, setTotalUnpaid, setTotalPayAmount, list, setList} = useContext(DailyRevenueChartContext)

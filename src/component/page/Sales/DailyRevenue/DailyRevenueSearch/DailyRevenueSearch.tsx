@@ -4,12 +4,7 @@ import { DailyRevenueSearchStyled } from "./styled";
 
 import { getCurrentDate } from "../../../../../common/CurrentDate";
 import { DailyRevenueChartContext } from "../../../../../api/provider/DailyRevenueChartProvider";
-
-
-export interface IDailyRevenueSearchParam {
-    date: string;
-    account: string;
-}
+import { IDailyRevenueSearchParam } from "../../../../../models/interface/Sales/DailyRevenueModel";
 
 export const DailyRevenueSearch = () => {
     // 기본 날짜와 초기 상태 설정

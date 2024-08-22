@@ -3,23 +3,6 @@ import { DailyRevenueChartStyled } from "./styled";
 import { Chart, registerables } from "chart.js";
 import { DailyRevenueChartContext } from "../../../../../api/provider/DailyRevenueChartProvider";
 
-export interface IDailyRevenueList{
-    amount:number;
-    bookDate: string;
-    custId: string;
-    custName: string;
-    payAmount: number;
-    unpaidState: string;
-}
-
-export interface IDailyRevenueRes{
-    list:IDailyRevenueList[];
-    totalAmount: number;
-    totalCount: number;
-    totalPayAmount: number;
-    totalUnpaid: number;
-}
-
 Chart.register(...registerables);
 
 export const DailyRevenueChart = ()=>{
