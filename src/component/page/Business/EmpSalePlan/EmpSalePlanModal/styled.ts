@@ -5,7 +5,6 @@ export const EmpSalePlanModalStyled = styled.div`
   height: 100%;
   position: fixed;
   display: flex;
-  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
@@ -23,6 +22,8 @@ export const EmpSalePlanModalStyled = styled.div`
     max-width: 90%;
     overflow-y: auto;
     max-height: 80%;
+    display: flex;
+    flex-direction: column;
   }
 
   .head {
@@ -37,15 +38,23 @@ export const EmpSalePlanModalStyled = styled.div`
   }
 
   label {
+    font-weight: bold;
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
+    position: relative;
+  }
+
+  span.required {
+    color: red;
+    font-size: 1em;
   }
 
   input[type="text"],
   input[type="date"],
   input[type="number"],
-  textarea {
+  textarea,
+  select {
     padding: 10px;
     margin-top: 5px;
     border-radius: 5px;
@@ -54,11 +63,6 @@ export const EmpSalePlanModalStyled = styled.div`
   }
 
   select {
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 1em;
     background-color: #f9f9f9;
     color: #333;
   }
@@ -79,7 +83,7 @@ export const EmpSalePlanModalStyled = styled.div`
     color: #fff;
     padding: 10px 20px;
     font-size: 1em;
-    margin: 0 5px;
+    margin-left: 10px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s, box-shadow 0.3s;

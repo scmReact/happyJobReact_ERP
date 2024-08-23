@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-export const EmpSalePlanSearchStyled = styled.div`
+// Styled-components for BmSalePlanSearch
+export const BmSalePlanSearchStyled = styled.div`
   margin: 70px 0px 0px -450px; // 위치
   text-align: right;
 

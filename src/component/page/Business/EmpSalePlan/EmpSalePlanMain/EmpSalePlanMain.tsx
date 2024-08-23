@@ -45,26 +45,23 @@ export const EmpSalePlanMain = () => {
   const [empSalePlanSearchList, setEmpSalePlanSearchList] = useState<
     IEmpSalePlanSearchList[]
   >([]);
-  //const [empSalePage, setEmpSalePage] = useState<number>(0);
-  //const [currentPage, setCurrentPage] = useState<number>(1);
+
   const [listCount, setListCount] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number | undefined>();
   const [planNum, setPlanNum] = useState<number>();
   const [low, setLow] = useState<IEmpSalePlanSearchList>(); //1row 데이터 모달로 던져주기
 
   useEffect(() => {
-    //EmpSalePlanSearch컴포넌트에서 검색조건들 navigate로 넘어오는 애들 : search
     console.log("2번 : search는 잘 받아 오냐 ? => ", search);
     searchEmpSaleveList();
   }, [search]);
 
   const searchEmpSaleveList = (cpage?: number) => {
     cpage = cpage || 1;
-    const searchParam = new URLSearchParams(search); //url에 페이징 담아서 서버로 보내주자
+    const searchParam = new URLSearchParams(search);
     searchParam.append("currentPage", cpage.toString());
     searchParam.append("pageSize", "5");
 
-    //세션에서 loginId까지 custNameList, userName은 모달, list,loginId,salPlanListCnt는 메인
     axios
       .post("/business/salePlanListJson.do", searchParam)
       .then((res: AxiosResponse<IEmpSalePlanSearchListJsonResponse>) => {

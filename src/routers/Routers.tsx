@@ -2,7 +2,7 @@ import { RouteObject, createBrowserRouter } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { DashBoard } from "../component/layout/DashBoard/DashBoard";
 import { NotFound } from "../component/common/NotFound/NotFound";
-import { EmpSalePlan } from "../pages/Business/EmpSalePlan/EmpSalePlan";
+import { EmpSalePlan } from "../pages/Business/EmpSalePlan";
 
 import { EmpGrade } from "../pages/Employee/EmpGrade";
 import { Unpaid } from "../pages/Accounting/Unpaid";
@@ -10,6 +10,7 @@ import { BizPartner } from "../pages/Business/BizPartner";
 import { EstMng } from "../pages/Business/EstMng";
 import { VctnApprove } from "../pages/Business/VctnApprove";
 import { VctnCalendar } from "../pages/Employee/VctnCalendar";
+import { BmSalePlan } from "../pages/Business/BmSalePlan";
 
 const routers: RouteObject[] = [
   { path: "*", element: <NotFound /> },
@@ -36,6 +37,7 @@ const routers: RouteObject[] = [
           { path: "bizPartner.do", element: <BizPartner /> },
           { path: "estMng.do", element: <EstMng /> },
           { path: "empSalePlan.do", element: <EmpSalePlan /> },
+          { path: "bmSalePlan.do", element: <BmSalePlan /> },
         ],
       },
     ],

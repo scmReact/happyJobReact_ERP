@@ -36,7 +36,6 @@ export interface IEmpSalePlanModalProps {
   //setPlanNum: React.Dispatch<React.SetStateAction<number | undefined>>;
   setPlanNum: (setPlanNum: undefined) => void;
   low?: IEmpSalePlanSearchList;
-  //main에서 받아올때 low가 없을수 있으니까
 }
 
 export interface IModalInsertResponse {
@@ -49,14 +48,11 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
   setPlanNum,
   low,
 }) => {
-  //최초 useEffect => 수정모달에서 사용할건데 props로 붙이고 목표날짜, 목표수량, 실적수량, 플랜노트 => 이거만 useState로 수정가능하게함
   useEffect(() => {
     if (low) {
       console.log(low); //props다 들어있고
-      // 수정(update) low가 존재 할 경우
-      setGoalQut(low.goal_qut || "");
-      setPerformQut(low.perform_qut || "");
-      //setTargetDate(low.target_date || ""); number라서 형 변환 해야됨
+      setGoalQut(low.goal_qut);
+      setPerformQut(low.perform_qut);
       setTargetDate(low.target_date ? low.target_date.toString() : "");
       setPlanNote(low.plan_note || "");
 
@@ -85,14 +81,10 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
   const [userName, setUserName] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [targetDate, setTargetDate] = useState<string>("");
-  const [goalQut, setGoalQut] = useState<number | "">("");
-  const [performQut, setPerformQut] = useState<number | "">("");
+  const [goalQut, setGoalQut] = useState<number>(0);
+  const [performQut, setPerformQut] = useState<number>(0);
   const [planNote, setPlanNote] = useState<string>("");
-  /*
-  const [custNameList, setCustNameList] = useState<string[]>([]); //여기에 custid와 custname불러오는중임
-*/
 
-  // 거래처 이름과 ID 상태
   // Map처럼 { key : string} : value : string}
   const [custNameIdMap, setCustNameIdMap] = useState<{ [key: string]: string }>(
     {}
@@ -100,41 +92,81 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
   const [selectedCustName, setSelectedCustName] = useState<string>("");
   const [custId, setCustId] = useState<string>("");
 
-  const handlerInsertOrUpdate = () => {
-    if (low) {
-      //수정 삭제 => low(즉 1열 클릭해서 데이터 있는 경우 다 붙여 넣자)
-      //수정 할때도 id가 필요함 + plan_num => detailNum으로 변수명 다름
-      console.log("update하기전에 변수에 넣어줄 애들 잘 들어있는지 1차 확인");
-      console.log(planNum); //undefined
-      console.log(custId); //공백
-      console.log(selectedItemCode); //공백
-      console.log(targetDate);
-      console.log(targetDate);
-      console.log(goalQut);
-      console.log(performQut);
-      console.log(planNote);
+  //제조업체, 대분류, 소분류, 리스트 불러오기
+  const [manufacturers, setManufacturers] = useState<string[]>([]);
+  const [majors, setMajors] = useState<string[]>([]);
+  const [subs, setSubs] = useState<string[]>([]);
+  const [itemName, setItemName] = useState<string[]>([]);
 
-      axios
-        .post("/business/salePlanUpdateJson.do", {
-          detailPlanNum: low.plan_num /*서버에서 변수명은 detailPlanNum*/, //못받음
-          cust_id: low.cust_id, //props에서 꺼내와야됨(String)으로만 가는중
-          item_code: low.item_code, //(String)으로만 가는중
-          target_date: targetDate, //잘받음
-          goal_qut: goalQut, //잘받음
-          perform_qut: performQut, //잘받음
-          plan_note: planNote, //잘 받음
-        })
-        .then(
-          (res: AxiosResponse<IModalInsertResponse>) => {
-            if (res.data.result === "Success") {
-              onSuccess();
-              alert("수정되었습니다");
-              setModal(false);
+  //불러 온뒤에 선택된 값
+  const [selectedManufacturer, setSelectedManufacturer] = useState<string>("");
+  const [selectedMajor, setSelectedMajor] = useState<string>("");
+  const [selectedSub, setSelectedSub] = useState<string>("");
+  const [selectedItemName, setSelectedItemName] = useState<string>("");
+  const [selectedItemCode, setSelectedItemCode] = useState<string>("");
+  const [itemCodeMap, setItemCodeMap] = useState<{ [key: string]: string }>({});
+
+  const handlerInsertOrUpdate = () => {
+    if (
+      low &&
+      low.plan_num &&
+      low.cust_id &&
+      low.item_code &&
+      targetDate &&
+      goalQut !== null &&
+      goalQut !== undefined && // goalQut만 쓰면 0 => false가 나오니까
+      performQut !== null &&
+      performQut !== undefined
+    ) {
+      if (low) {
+        console.log("update하기전에 변수에 넣어줄 애들 잘 들어있는지 1차 확인");
+        console.log(planNum); //undefined
+        console.log(custId); //공백
+        console.log(selectedItemCode); //공백
+        console.log(targetDate);
+        console.log(targetDate);
+        console.log(goalQut);
+        console.log(performQut);
+        console.log(planNote);
+
+        axios
+          .post("/business/salePlanUpdateJson.do", {
+            detailPlanNum: low.plan_num, //못받음
+            cust_id: low.cust_id, //props에서 꺼내와야됨(String)으로만 가는중
+            item_code: low.item_code, //(String)으로만 가는중
+            target_date: targetDate,
+            goal_qut: goalQut,
+            perform_qut: performQut,
+            plan_note: planNote,
+          })
+          .then(
+            (res: AxiosResponse<IModalInsertResponse>) => {
+              if (res.data.result === "Success") {
+                onSuccess();
+                alert("수정되었습니다");
+                setModal(false);
+              }
             }
-          }
-          /*[low]*/
-        );
+            /*[low]*/
+          );
+      } else {
+      }
     } else {
+      alert("값들");
+    }
+  };
+
+  const handlerInsert = () => {
+    if (
+      selectedManufacturer &&
+      selectedCustName &&
+      targetDate &&
+      goalQut !== null &&
+      goalQut !== undefined && // goalQut 체크
+      performQut !== null &&
+      performQut !== undefined &&
+      selectedItemName
+    ) {
       axios
         .post("/business/salePlanInsertJson.do", {
           loginID,
@@ -152,6 +184,8 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
             setModal(false);
           }
         });
+    } else {
+      alert("필수값을 입력하세요");
     }
   };
 
@@ -194,25 +228,6 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
     setSelectedCustName(selectedCustName); // 선택된 거래처 이름 설정
     setCustId(custNameIdMap[selectedCustName] || ""); // 선택된 거래처 이름에 해당하는 ID 설정
   };
-
-  //제조업체, 대분류, 소분류, 리스트 불러오기
-  const [manufacturers, setManufacturers] = useState<string[]>([]);
-  const [majors, setMajors] = useState<string[]>([]);
-  const [subs, setSubs] = useState<string[]>([]);
-  const [itemName, setItemName] = useState<string[]>([]);
-
-  //불러 온뒤에 선택된 값
-  const [selectedManufacturer, setSelectedManufacturer] = useState<string>("");
-  const [selectedMajor, setSelectedMajor] = useState<string>("");
-  const [selectedSub, setSelectedSub] = useState<string>("");
-  const [selectedItemName, setSelectedItemName] = useState<string>("");
-  const [selectedItemCode, setSelectedItemCode] = useState<string>(""); //item_code는 단일값만 => 선택된 item_name에 맞는 item_code 1개만 저장할거임
-  //const [itemCode, setItemCode] = useState<string>(""); //insert할때 사용할 item_code
-
-  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-  //handlerInsert위에부분에서 사용중
-  const [itemCodeMap, setItemCodeMap] = useState<{ [key: string]: string }>({}); //???? item_name, item_code를 관리하기위함??
-  //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@여기 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
   //여기서부터 제조사 ~~~ 제품이름까지
   //제조사 가져오기
@@ -350,7 +365,7 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
             <input type="text" value={userName} readOnly />
           </label>
           <label>
-            거래처 이름
+            거래처 이름<span className="required">*필수입력</span>
             {low ? (
               <>
                 <select value={low.cust_id} onChange={handleCustNameChange}>
@@ -368,14 +383,14 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
               </select>
             )}
             <input type="hidden" value={custId} />
-            <div>선택된 거래처코드: {custId}</div>
           </label>
           <label>
-            제조사
+            제조사<span className="required">*필수입력</span>
             {low ? (
               <select
                 value={low.manufac}
                 onChange={(e) => setSelectedManufacturer(e.target.value)}
+                required
               >
                 <option value={low.manufac}>{low.manufac}</option>
               </select>
@@ -383,6 +398,7 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
               <select
                 value={selectedManufacturer}
                 onChange={(e) => setSelectedManufacturer(e.target.value)}
+                required
               >
                 <option value="">제조사를 선택하세요</option>
                 {manufacturers.length > 0 ? (
@@ -398,11 +414,12 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
             )}
           </label>
           <label>
-            대분류
+            대분류<span className="required">*필수입력</span>
             {low ? (
               <select
                 value={low.major_class}
                 onChange={(e) => setSelectedMajor(e.target.value)}
+                required
               >
                 <option value={low.major_class}>{low.major_class}</option>
               </select>
@@ -411,6 +428,7 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
                 value={selectedMajor}
                 onChange={(e) => setSelectedMajor(e.target.value)}
                 disabled={!selectedManufacturer}
+                required
               >
                 <option value="">대분류를 선택하세요</option>
                 {majors.length > 0 ? (
@@ -427,11 +445,12 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
           </label>
 
           <label>
-            소분류
+            소분류<span className="required">*필수입력</span>
             {low ? (
               <select
                 value={low.sub_class} // 현재 선택된 소분류 값을 설정
                 onChange={(e) => setSelectedSub(e.target.value)} // 선택된 값으로 상태 업데이트
+                required
               >
                 <option value={low.sub_class}>{low.sub_class}</option>{" "}
                 {/* 현재 선택된 소분류 */}
@@ -441,6 +460,7 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
                 value={selectedSub} // 상태에 따라 소분류 값을 설정
                 onChange={(e) => setSelectedSub(e.target.value)} // 선택된 값으로 상태 업데이트
                 disabled={!selectedMajor} // 대분류가 선택되지 않았으면 비활성화
+                required
               >
                 <option value="">소분류를 선택하세요</option>
                 {subs.length > 0 ? (
@@ -459,12 +479,13 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
           </label>
 
           <label>
-            제품이름
+            제품이름<span className="required">*필수입력</span>
             {low ? (
               <select
                 value={low.item_name}
                 onChange={handleItemNameChange}
                 disabled={!low.sub_class}
+                required
               >
                 <option value={low.item_name}>{low.item_name}</option>
               </select>
@@ -473,6 +494,7 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
                 value={selectedItemName}
                 onChange={handleItemNameChange}
                 disabled={!selectedSub}
+                required
               >
                 <option value="">아이템을 선택하세요</option>
                 {itemName.length > 0 ? (
@@ -487,10 +509,9 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
               </select>
             )}
             <input type="hidden" value={selectedItemCode} />
-            <div>선택된 아이템 코드: {selectedItemCode}</div>
           </label>
           <label>
-            목표날짜
+            목표날짜<span className="required">*필수입력</span>
             <input
               type="date"
               value={targetDate}
@@ -498,31 +519,34 @@ export const EmpSalePlanModal: React.FC<IEmpSalePlanModalProps> = ({
             />
           </label>
           <label>
-            목표수량
+            목표수량<span className="required">*필수입력</span>
             <input
               type="number"
               value={goalQut}
-              onChange={(e) => setGoalQut(Number(e.target.value))}
+              onChange={(e) =>
+                setGoalQut(e.target.value ? parseInt(e.target.value) : 0)
+              }
             />
           </label>
           <label>
-            실적수량
+            실적수량<span className="required">*필수입력</span>
             <input
               type="number"
               value={performQut}
-              onChange={(e) => setPerformQut(Number(e.target.value))}
+              onChange={(e) => setPerformQut(parseInt(e.target.value))}
             />
           </label>
           <label>
-            플랜 노트
+            비고
             <input
               type="text"
               value={planNote}
               onChange={(e) => setPlanNote(e.target.value)}
+              required
             />
           </label>
           <div className="buttonDiv">
-            <Button onClick={handlerInsertOrUpdate}>
+            <Button onClick={low ? handlerInsertOrUpdate : handlerInsert}>
               {low ? "수정" : "저장"}
             </Button>
             {low && <Button onClick={handlerDelete}>삭제</Button>}
