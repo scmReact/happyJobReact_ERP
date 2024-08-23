@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { EmpSalePlanSearchStyled } from "./styled";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Button } from "../../../../common/Button/Button";
+import { BmSalePlanSearchStyled } from "./styled";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export interface IEmpSalePlaneListJsonResponse {
-  searchManuflist: IEmpSaleCustList[];
+export interface IBmSalePlaneListJsonResponse {
+  searchManuflist: IBmSaleList[];
 }
 
-export interface IEmpSaleCustList {
+export interface IBmSaleList {
   cust_id: string;
   cust_name: string;
   goal_qut: number;
@@ -25,42 +25,47 @@ export interface IEmpSaleCustList {
   target_date: string;
 }
 
-export const EmpSalePlanSearch = () => {
+export const BmSalePlanSearch = () => {
   const [searchDate, setSearchDate] = useState<string>("");
-  const searchItemName = useRef<HTMLInputElement>(null);
+  const [searchItemName, setSearchItemName] = useState<string>("");
+  const searchLoginId = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-
-  const handlerSearch = () => {
-    const query: string[] = [];
-
-    searchItemName.current?.value &&
-      query.push(`searchItemName=${searchItemName.current?.value}`);
-    !searchDate || query.push(`searchDate=${searchDate}`);
-    !selectedManufacturer ||
-      query.push(`searchManufac=${selectedManufacturer}`);
-    !selectedMajor || query.push(`selectedMajor=${selectedMajor}`);
-    !selectedSub || query.push(`selectedSub=${selectedSub}`);
-
-    const queryString = query.length > 0 ? `?${query.join("&")}` : "";
-    //queryString ?searchManufac=애들랜드&searchMajor=인형&searchSub=알쏭달쏭 티니핑
-
-    navigate(`/react/business/empSalePlan.do${queryString}`);
-  };
 
   const [manufacturers, setManufacturers] = useState<string[]>([]);
   const [majors, setMajors] = useState<string[]>([]);
   const [subs, setSubs] = useState<string[]>([]);
+  const [ItemName, setItemName] = useState<string[]>([]);
 
   const [selectedManufacturer, setSelectedManufacturer] = useState<string>("");
   const [selectedMajor, setSelectedMajor] = useState<string>("");
   const [selectedSub, setSelectedSub] = useState<string>("");
+  const [seletedItemName, setSelectedItemName] = useState<string>("");
 
-  //제조사 가져오기
+  const handlerSearch = () => {
+    const query: string[] = [];
+
+    //백틱 => mapper 조건 변수명
+    !searchItemName || query.push(`searchItemName=${searchItemName}`);
+    !searchDate || query.push(`searchDate=${searchDate}`);
+    !selectedManufacturer ||
+      query.push(`searchManufac=${selectedManufacturer}`);
+    !selectedMajor || query.push(`selectedMajor=${selectedMajor}`);
+    !selectedSub || query.push(`searchItemName=${selectedSub}`);
+
+    searchLoginId.current?.value &&
+      query.push(`searchloginID=${searchLoginId.current?.value}`); //[object&Object]
+    //searchItemName.current?.value &&query.push(`searchItemName=${searchItemName.current?.value}`);
+
+    const queryString = query.length > 0 ? `?${query.join("&")}` : "";
+
+    navigate(`/react/business/bmSalePlan.do${queryString}`);
+    //navigate : url경로
+  };
+
+  //여기서부터 제조사 => 대 => 소 => 제품이름까지 가져오는곳
   useEffect(() => {
     axios
-      .get<{ searchList: IEmpSaleCustList[] }>(
-        "/business/manufacturersListJson.do"
-      )
+      .get<{ searchList: IBmSaleList[] }>("/business/manufacturersListJson.do")
       .then((res) => {
         const searchList = res.data.searchList;
         if (Array.isArray(searchList)) {
@@ -85,7 +90,7 @@ export const EmpSalePlanSearch = () => {
             const majorClasses = response.data.map((item) => item.major_class);
             setSelectedMajor("");
             setSelectedSub("");
-
+            setSelectedItemName("");
             setMajors(majorClasses);
           } else {
             console.error("API 응답 데이터가 배열이 아님:", response.data);
@@ -119,11 +124,35 @@ export const EmpSalePlanSearch = () => {
     }
   }, [selectedMajor]);
 
+  //소분류 => 제품이름 가져오기
+  useEffect(() => {
+    if (selectedSub) {
+      axios
+        .get(
+          `/business/getItemNameClassesJson.do?manufac=${selectedManufacturer}&major_class=${selectedMajor}&sub_class=${selectedSub}`
+        )
+        .then((response) => {
+          if (Array.isArray(response.data)) {
+            const itemName = response.data.map((item) => item.item_name);
+            setItemName(itemName);
+            setSelectedItemName("");
+          } else {
+            console.error("API안타짐?", response.data);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
+  }, [selectedSub]);
+
   return (
     <div>
-      <EmpSalePlanSearchStyled>
+      <BmSalePlanSearchStyled>
+        사번
+        <input ref={searchLoginId} placeholder="사번을 입력해주세요" />
         <label>
-          제조사
+          제조사:
           <select
             value={selectedManufacturer}
             onChange={(e) => setSelectedManufacturer(e.target.value)}
@@ -141,7 +170,7 @@ export const EmpSalePlanSearch = () => {
           </select>
         </label>
         <label>
-          대분류
+          대분류:
           <select
             value={selectedMajor}
             onChange={(e) => setSelectedMajor(e.target.value)}
@@ -160,7 +189,7 @@ export const EmpSalePlanSearch = () => {
           </select>
         </label>
         <label>
-          소분류
+          소분류:
           <select
             value={selectedSub}
             onChange={(e) => setSelectedSub(e.target.value)}
@@ -178,15 +207,32 @@ export const EmpSalePlanSearch = () => {
             )}
           </select>
         </label>
-        제품이름
-        <input ref={searchItemName} placeholder="제목 입력" />
+        <label>
+          제품이름:
+          <select
+            value={seletedItemName}
+            onChange={(e) => setSelectedItemName(e.target.value)}
+            disabled={!selectedSub}
+          >
+            <option value="">소분류를 선택하세요</option>
+            {ItemName.length > 0 ? (
+              ItemName.map((itemNames, index) => (
+                <option key={index} value={itemNames}>
+                  {itemNames}
+                </option>
+              ))
+            ) : (
+              <option disabled>제품이름를 불러올 수 없습니다</option>
+            )}
+          </select>
+        </label>
         <input
           type="date"
           value={searchDate}
           onChange={(e) => setSearchDate(e.target.value)}
         />
         <Button onClick={handlerSearch}>검색</Button>
-      </EmpSalePlanSearchStyled>
+      </BmSalePlanSearchStyled>
     </div>
   );
 };
