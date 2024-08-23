@@ -2,14 +2,15 @@ import { RouteObject, createBrowserRouter } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { DashBoard } from "../component/layout/DashBoard/DashBoard";
 import { NotFound } from "../component/common/NotFound/NotFound";
-import { EmpSalePlan } from "../pages/Business/EmpSalePlan/EmpSalePlan";
-
 import { EmpGrade } from "../pages/Employee/EmpGrade";
 import { Unpaid } from "../pages/Accounting/Unpaid";
 import { BizPartner } from "../pages/Business/BizPartner";
 import { EstMng } from "../pages/Business/EstMng";
 import { VctnApprove } from "../pages/Business/VctnApprove";
 import { VctnCalendar } from "../pages/Employee/VctnCalendar";
+import { DisbApply } from "../pages/Accounting/DisbApply";
+import { EmpSalePlan } from "../pages/Business/EmpSalePlan/EmpSalePlan";
+import { DailyRevenue } from "../pages/Sales/DailyRevenue";
 import { AccSlip } from "../pages/Accounting/AccSlip";
 
 const routers: RouteObject[] = [
@@ -32,6 +33,7 @@ const routers: RouteObject[] = [
                 children: [
                     { path: "unpaid.do", element: <Unpaid /> },
                     { path: "accSlipF.do", element: <AccSlip /> },
+                    { path: "disbApply.do", element: <DisbApply /> },
                 ],
             },
             {
@@ -41,6 +43,11 @@ const routers: RouteObject[] = [
                     { path: "estMng.do", element: <EstMng /> },
                     { path: "empSalePlan.do", element: <EmpSalePlan /> },
                 ],
+            },
+
+            {
+                path: "sales",
+                children: [{ path: "dailyRevenue.do", element: <DailyRevenue /> }],
             },
         ],
     },
