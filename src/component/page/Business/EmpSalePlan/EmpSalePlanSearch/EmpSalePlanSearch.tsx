@@ -30,8 +30,6 @@ export const EmpSalePlanSearch = () => {
   const searchItemName = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  //
-
   const handlerSearch = () => {
     const query: string[] = [];
 
