@@ -17,6 +17,7 @@ export const AccSlipMain = () => {
     const [accSlipList, setAccSlipList] = useState<IAccSlip[]>([]);
     const [accSlipTotalCnt, setAccSlipTotalCnt] = useState<number>(0);
     const [modal, setModal] = useRecoilState(modalState);
+    const [showModalBtn, setShowModalBtn] = useState<boolean>(false);
 
     useEffect(() => {
         searchAccSlip();
@@ -36,6 +37,9 @@ export const AccSlipMain = () => {
             setAccSlipList(postSearchAccSlip.accSlipList);
             setAccSlipTotalCnt(postSearchAccSlip.accSlipTotalCnt);
             setCurrentPage(cpage);
+
+            if (searchCust.cust_id !== "all" && searchCust.cust_id !== "" && postSearchAccSlip.accSlipList.length > 0) setShowModalBtn(true);
+            else setShowModalBtn(false);
         }
     };
 
@@ -45,7 +49,7 @@ export const AccSlipMain = () => {
 
     return (
         <>
-            <AccSlipButtonStyled>{searchCust.cust_id !== "all" && searchCust.cust_id !== "" && accSlipList.length > 0 ? <Button onClick={handlerModal}>상세조회</Button> : null}</AccSlipButtonStyled>
+            <AccSlipButtonStyled>{showModalBtn ? <Button onClick={handlerModal}>상세조회</Button> : null}</AccSlipButtonStyled>
             <StyledTable>
                 <colgroup>
                     <col width="10%" />
