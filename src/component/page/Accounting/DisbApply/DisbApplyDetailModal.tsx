@@ -6,6 +6,7 @@ import { DisbApplyModalStyled } from "./styled";
 import { StyledTable, StyledTd, StyledTh } from "../../../common/styled/StyledTable";
 import { Button } from "../../../common/Button/Button";
 import NoImage from "../../../../assets/noImage.jpg";
+import { TypeNullCheck, nullCheck } from "../../../../common/nullCheck";
 
 export interface IDisbApplyDetailModalProps {
     resoNum?: number;
@@ -155,6 +156,18 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
             apprDate: apprDate.current?.value,
             disbContent: content.current?.value,
         };
+
+        // 필수값 체크
+        const checklist: TypeNullCheck[] = [
+            { inval: textData.useDate, msg: "사용일자를 선택해주세요" },
+            { inval: grCodeNm.current?.value, msg: "계정대분류명을 선택해주세요" },
+            { inval: textData.selAcctCode, msg: "계정과목을 선택해주세요" },
+            { inval: textData.custId, msg: "거래처명을 선택해주세요" },
+            { inval: textData.amount, msg: "결의금액을 선택해주세요" },
+        ];
+        if (!nullCheck(checklist)) {
+            return;
+        }
         if (fileData) fileForm.append("file", fileData);
         fileForm.append("text", new Blob([JSON.stringify(textData)], { type: "application/json" }));
         axios.post("/accounting/saveDisbJson.do", fileForm).then((res: AxiosResponse<IPostResponse>) => {
@@ -236,7 +249,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
         });
     };
 
-    const handlerSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    const handlerGrCodeNmSelect = (e: ChangeEvent<HTMLSelectElement>) => {
         setSelected(e.target.value);
         searchCommonList(e.target.value);
     };
@@ -326,7 +339,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
                                     {!resoNum ? (
                                         <select
                                             value={selected}
-                                            onChange={handlerSelect}
+                                            onChange={handlerGrCodeNmSelect}
                                             style={{ width: 120 }}
                                             ref={grCodeNm}
                                         >
@@ -351,6 +364,9 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
                                 <StyledTd>
                                     {!resoNum ? (
                                         <select ref={acctCodeNm} style={{ width: 120 }}>
+                                            <option value={""} disabled selected>
+                                                선택
+                                            </option>
                                             {commonList.map((a) => {
                                                 return <option value={a.dtl_cod}>{a.dtl_cod_nm}</option>;
                                             })}
