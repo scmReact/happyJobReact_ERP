@@ -5,15 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../../../stores/modalState";
 import axios, { AxiosResponse } from "axios";
-
-export interface ICommonList {
-    dtl_cod: string;
-    dtl_cod_nm: string;
-}
-
-export interface ICommonListResponse {
-    commonList: ICommonList[];
-}
+import { ICommonList, ICommonListResponse } from "../../../../models/interface/Accounting/DisbApply";
 
 export const DisbApplySearch = () => {
     const [startDate, setStartDate] = useState<string>();
