@@ -242,9 +242,7 @@ export const DisbursementDetailModal: FC<IDisbursementDetailModalProps> = ({ res
                                         disabled
                                     />
                                 </StyledTd>
-                                <StyledTh size={15}>
-                                    사용일자<span className="font_red">*</span>
-                                </StyledTh>
+                                <StyledTh size={15}>사용일자</StyledTh>
                                 <StyledTd>
                                     <input
                                         type="date"
