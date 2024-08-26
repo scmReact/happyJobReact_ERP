@@ -45,6 +45,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
     const [imageUrl, setImageUrl] = useState<string>("notImage");
     const [fileData, setFileData] = useState<File>();
     const [applyDate, setApplyDate] = useState<string>();
+    const [useDate, setUseDate] = useState<string>();
     const [applyId, setApplyId] = useState<string>();
     const [applyName, setApplyName] = useState<string>();
     const [applyDept, setApplyDept] = useState<string>();
@@ -209,7 +210,9 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
     const handlerUseDate = (e: ChangeEvent<HTMLInputElement>) => {
         if (fomatDate() >= e.target.value) {
             alert("사용일자를 신청일자 이후로 설정해주세요");
-            return false;
+            setUseDate("");
+        } else {
+            setUseDate(e.target.value);
         }
     };
 
@@ -247,7 +250,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
                                 <StyledTd>
                                     <input
                                         type="date"
-                                        defaultValue={disbApplyDetail?.useDate}
+                                        value={useDate}
                                         ref={uDate}
                                         style={
                                             resoNum === undefined
