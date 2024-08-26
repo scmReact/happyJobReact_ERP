@@ -14,6 +14,7 @@ import { BmSalePlan } from "../pages/Business/BmSalePlan";
 import { DailyRevenue } from "../pages/Sales/DailyRevenue";
 import { DisbApply } from "../pages/Accounting/DisbApply";
 import { Disbursement } from "../pages/Accounting/Disbursement";
+import { AccSlip } from "../pages/Accounting/AccSlip";
 
 const routers: RouteObject[] = [
     { path: "*", element: <NotFound /> },
@@ -36,6 +37,7 @@ const routers: RouteObject[] = [
                     { path: "unpaid.do", element: <Unpaid /> },
                     { path: "disbApply.do", element: <DisbApply /> },
                     { path: "disbursement.do", element: <Disbursement /> },
+                    { path: "accSlipF.do", element: <AccSlip /> },
                 ],
             },
             {
@@ -49,7 +51,9 @@ const routers: RouteObject[] = [
             },
             {
                 path: "sales",
-                children: [{ path: "dailyRevenue.do", element: <DailyRevenue /> }],
+                children: [
+                    { path: "dailyRevenue.do", element: <DailyRevenue /> },
+                ],
             },
         ],
     },
