@@ -119,6 +119,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
         if (!nullCheck(checklist)) {
             return;
         }
+
         if (fileData) fileForm.append("file", fileData);
         fileForm.append("text", new Blob([JSON.stringify(textData)], { type: "application/json" }));
         axios.post("/accounting/saveDisbJson.do", fileForm).then((res: AxiosResponse<IPostResponse>) => {
@@ -205,6 +206,13 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
         searchCommonList(e.target.value);
     };
 
+    const handlerUseDate = (e: ChangeEvent<HTMLInputElement>) => {
+        if (fomatDate() >= e.target.value) {
+            alert("사용일자를 신청일자 이후로 설정해주세요");
+            return false;
+        }
+    };
+
     return (
         <>
             <DisbApplyModalStyled isOpen={modal} ariaHideApp={false}>
@@ -246,6 +254,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
                                                 ? { width: 100 }
                                                 : { width: 100, background: "#e3e6e6" }
                                         }
+                                        onChange={handlerUseDate}
                                         disabled={resoNum !== undefined}
                                     />
                                 </StyledTd>
