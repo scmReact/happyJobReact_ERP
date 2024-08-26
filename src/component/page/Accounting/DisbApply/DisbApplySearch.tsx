@@ -1,15 +1,15 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { Button } from "../../../common/Button/Button";
 import { DisbApplySearchStyled } from "./styled";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { modalState } from "../../../../stores/modalState";
 import axios, { AxiosResponse } from "axios";
 import { ICommonList, ICommonListResponse } from "../../../../models/interface/Accounting/DisbApply";
 
 export const DisbApplySearch = () => {
-    const [startDate, setStartDate] = useState<string>();
-    const [endDate, setEndDate] = useState<string>();
+    const [startDate, setStartDate] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
     const accGroupCode = useRef<HTMLSelectElement>(null);
     const accDetailCode = useRef<HTMLSelectElement>(null);
     const apprYn = useRef<HTMLSelectElement>(null);
@@ -48,12 +48,21 @@ export const DisbApplySearch = () => {
         searchCommonList(e.target.value);
     };
 
+    const handlerEndDate = (e: ChangeEvent<HTMLInputElement>) => {
+        if ((startDate?.toString() as string) >= e.target.value) {
+            alert("시작일자 이후로 설정해주세요");
+            setEndDate("");
+        } else {
+            setEndDate(e.target.value);
+        }
+    };
+
     return (
         <div className={"searchArea"}>
             <DisbApplySearchStyled>
                 신청일자&nbsp;
-                <input type="date" onChange={(e) => setStartDate(e.target.value)}></input> ~ &nbsp;
-                <input type="date" onChange={(e) => setEndDate(e.target.value)}></input>
+                <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input> ~ &nbsp;
+                <input type="date" value={endDate} onChange={handlerEndDate}></input>
                 계정대분류명&nbsp;
                 <select className={"selectbox"} value={selected} onChange={handlerSelect} ref={accGroupCode}>
                     <option value={""}>전체</option>
