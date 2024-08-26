@@ -66,7 +66,8 @@ export const DisbApplyModalStyled = styled(ReactModal)`
 export const DisbApplySearchStyled = styled.div`
     margin-bottom: 10px;
     margin-top: 60px;
-    //position: fixed;
+    margin-left: -450px;
+    float: right;
 
     input,
     select {
