@@ -7,71 +7,22 @@ import { StyledTable, StyledTd, StyledTh } from "../../../common/styled/StyledTa
 import { Button } from "../../../common/Button/Button";
 import NoImage from "../../../../assets/noImage.jpg";
 import { TypeNullCheck, nullCheck } from "../../../../common/nullCheck";
+import {
+    IDisbApplyDetailModal,
+    IDisbApplyDetailModalResponse,
+    IUserInfo,
+    IUserInfoResponse,
+    ICommonList,
+    ICommonListResponse,
+    ICustList,
+    ICustListResponse,
+    IPostResponse,
+} from "../../../../models/interface/Accounting/DisbApply";
 
 export interface IDisbApplyDetailModalProps {
     resoNum?: number;
     onSuccess: () => void;
     setResoNum: (resoNum: undefined) => void;
-}
-
-export interface IDisbApplyDetailModal {
-    resoNum: number;
-    applyId: string;
-    applyName: string;
-    applyDept: string;
-    custId: number;
-    custName: string;
-    groupCode: string;
-    grCodeNm: string;
-    acctCode: string;
-    acctCodeNm: string;
-    applyDate: string;
-    useDate: string;
-    disbContent: string;
-    amount: string;
-    apprYn: string;
-    apprDate: string;
-    eviMaterial: string;
-    phsycalPath: string;
-    logicalPath: string;
-    fileSize: number;
-    fileExt: string;
-}
-
-export interface IDisbApplyDetailModalResponse {
-    disbDetail: IDisbApplyDetailModal;
-}
-
-export interface IPostResponse {
-    result: string;
-}
-
-export interface IUserInfo {
-    loginId: string;
-    name: string;
-    deptName: string;
-}
-
-export interface IUserInfoResponse {
-    userInfo: IUserInfo;
-}
-
-export interface ICommonList {
-    dtl_cod: string;
-    dtl_cod_nm: string;
-}
-
-export interface ICommonListResponse {
-    commonList: ICommonList[];
-}
-
-export interface ICustList {
-    custId: number;
-    custName: string;
-}
-
-export interface ICustListResponse {
-    custList: ICustList[];
 }
 
 export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, onSuccess, setResoNum }) => {

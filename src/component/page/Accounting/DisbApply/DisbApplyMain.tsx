@@ -7,29 +7,7 @@ import { StyledTable, StyledTd, StyledTh } from "../../../common/styled/StyledTa
 import { PageNavigate } from "../../../common/pageNavigation/PageNavigate";
 import { Protal } from "../../../common/potal/Portal";
 import { DisbApplyDetailModal } from "./DisbApplyDetailModal";
-
-export interface IDisbApplyList {
-    resoNum: number;
-    applyId: string;
-    applyDept: string;
-    custId: number;
-    groupCode: string;
-    grCodeNm: string;
-    acctCode: string;
-    acctCodeNm: string;
-    applyDate: string;
-    useDate: string;
-    disbContent: string;
-    amount: number;
-    apprYn: string;
-    apprDate: string;
-    eviMaterial: string;
-}
-
-export interface IDisbApplyListResponse {
-    disbList: IDisbApplyList[];
-    disbCnt: number;
-}
+import { IDisbApplyList, IDisbApplyListResponse } from "../../../../models/interface/Accounting/DisbApply";
 
 export const DisbApplyMain = () => {
     const { search } = useLocation();
