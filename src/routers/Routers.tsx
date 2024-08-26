@@ -11,37 +11,48 @@ import { EstMng } from "../pages/Business/EstMng";
 import { VctnApprove } from "../pages/Business/VctnApprove";
 import { VctnCalendar } from "../pages/Employee/VctnCalendar";
 import { BmSalePlan } from "../pages/Business/BmSalePlan";
+import { DailyRevenue } from "../pages/Sales/DailyRevenue";
+import { DisbApply } from "../pages/Accounting/DisbApply";
+import { Disbursement } from "../pages/Accounting/Disbursement";
 
 const routers: RouteObject[] = [
-  { path: "*", element: <NotFound /> },
-  { path: "/", element: <Login /> },
-  {
-    path: "/react",
-    element: <DashBoard />,
-    children: [
-      {
-        path: "employee",
+    { path: "*", element: <NotFound /> },
+    { path: "/", element: <Login /> },
+    {
+        path: "/react",
+        element: <DashBoard />,
         children: [
-          { path: "empGrade.do", element: <EmpGrade /> },
-          { path: "vctnApprove.do", element: <VctnApprove /> },
-          { path: "vctnCalendar.do", element: <VctnCalendar /> },
+            {
+                path: "employee",
+                children: [
+                    { path: "empGrade.do", element: <EmpGrade /> },
+                    { path: "vctnApprove.do", element: <VctnApprove /> },
+                    { path: "vctnCalendar.do", element: <VctnCalendar /> },
+                ],
+            },
+            {
+                path: "accounting",
+                children: [
+                    { path: "unpaid.do", element: <Unpaid /> },
+                    { path: "disbApply.do", element: <DisbApply /> },
+                    { path: "disbursement.do", element: <Disbursement /> },
+                ],
+            },
+            {
+                path: "business",
+                children: [
+                    { path: "bizPartner.do", element: <BizPartner /> },
+                    { path: "estMng.do", element: <EstMng /> },
+                    { path: "empSalePlan.do", element: <EmpSalePlan /> },
+                    { path: "bmSalePlan.do", element: <BmSalePlan /> },
+                ],
+            },
+            {
+                path: "sales",
+                children: [{ path: "dailyRevenue.do", element: <DailyRevenue /> }],
+            },
         ],
-      },
-      {
-        path: "accounting",
-        children: [{ path: "unpaid.do", element: <Unpaid /> }],
-      },
-      {
-        path: "business",
-        children: [
-          { path: "bizPartner.do", element: <BizPartner /> },
-          { path: "estMng.do", element: <EstMng /> },
-          { path: "empSalePlan.do", element: <EmpSalePlan /> },
-          { path: "bmSalePlan.do", element: <BmSalePlan /> },
-        ],
-      },
-    ],
-  },
+    },
 ];
 
 export const Routers = createBrowserRouter(routers);
