@@ -3,19 +3,11 @@ import { Button } from "../../../../common/Button/Button";
 import { DisbursementSearchStyled } from "../styled";
 import { useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
-
-export interface ICommonList {
-    dtl_cod: string;
-    dtl_cod_nm: string;
-}
-
-export interface ICommonListResponse {
-    commonList: ICommonList[];
-}
+import { ICommonList, ICommonListResponse } from "../../../../../models/interface/Accounting/Disbursement";
 
 export const DisbursementSearch = () => {
-    const [startDate, setStartDate] = useState<string>();
-    const [endDate, setEndDate] = useState<string>();
+    const [startDate, setStartDate] = useState<string>("");
+    const [endDate, setEndDate] = useState<string>("");
     const accGroupCode = useRef<HTMLSelectElement>(null);
     const accDetailCode = useRef<HTMLSelectElement>(null);
     const apprYn = useRef<HTMLSelectElement>(null);
@@ -49,13 +41,22 @@ export const DisbursementSearch = () => {
         searchCommonList(e.target.value);
     };
 
+    const handlerEndDate = (e: ChangeEvent<HTMLInputElement>) => {
+        if ((startDate?.toString() as string) >= e.target.value) {
+            alert("시작일자 이후로 설정해주세요");
+            setEndDate("");
+        } else {
+            setEndDate(e.target.value);
+        }
+    };
+
     return (
         <div className={"searchArea"}>
             <DisbursementSearchStyled>
                 <label>
                     신청일자
-                    <input type="date" onChange={(e) => setStartDate(e.target.value)}></input> ~ {""}
-                    <input type="date" onChange={(e) => setEndDate(e.target.value)}></input>
+                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input> ~ {""}
+                    <input type="date" value={endDate} onChange={handlerEndDate}></input>
                 </label>
                 <label>
                     계정대분류명

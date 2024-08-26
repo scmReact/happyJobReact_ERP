@@ -7,29 +7,7 @@ import { StyledTable, StyledTd, StyledTh } from "../../../../common/styled/Style
 import { PageNavigate } from "../../../../common/pageNavigation/PageNavigate";
 import { Protal } from "../../../../common/potal/Portal";
 import { DisbursementDetailModal } from "../DisbursementDetailModal/DisbursementDetailModal";
-
-export interface IDisbApprList {
-    resoNum: number;
-    applyId: string;
-    applyDept: string;
-    custId: number;
-    groupCode: string;
-    grCodeNm: string;
-    acctCode: string;
-    acctCodeNm: string;
-    applyDate: string;
-    useDate: string;
-    disbContent: string;
-    amount: number;
-    apprYn: string;
-    apprDate: string;
-    eviMaterial: string;
-}
-
-export interface IDisbApprListResponse {
-    disbApprList: IDisbApprList[];
-    disbApprCnt: number;
-}
+import { IDisbApprList, IDisbApprListResponse } from "../../../../../models/interface/Accounting/Disbursement";
 
 export const DisbursementMain = () => {
     const { search } = useLocation();
