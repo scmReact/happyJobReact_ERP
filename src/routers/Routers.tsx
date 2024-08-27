@@ -12,9 +12,13 @@ import { VctnApprove } from "../pages/Business/VctnApprove";
 import { VctnCalendar } from "../pages/Employee/VctnCalendar";
 import { BmSalePlan } from "../pages/Business/BmSalePlan";
 import { DailyRevenue } from "../pages/Sales/DailyRevenue";
+
+import { YearlyRevenue } from "../pages/Sales/YearlyRevenue";
+
 import { DisbApply } from "../pages/Accounting/DisbApply";
 import { Disbursement } from "../pages/Accounting/Disbursement";
 import { AccSlip } from "../pages/Accounting/AccSlip";
+
 
 const routers: RouteObject[] = [
     { path: "*", element: <NotFound /> },
@@ -51,8 +55,11 @@ const routers: RouteObject[] = [
             },
             {
                 path: "sales",
-                children: [
-                    { path: "dailyRevenue.do", element: <DailyRevenue /> },
+
+                children: [{ path: "dailyRevenue.do", element: <DailyRevenue /> },
+                           { path: "yearlyRevenue.do", element: <YearlyRevenue /> },
+ 
+
                 ],
             },
         ],
