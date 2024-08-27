@@ -18,7 +18,8 @@ export const EstMngStyled = styled.div`
 
 export const EstMngSearchStyled = styled.div`
     position: absolute;
-    padding-left: 550px;
+    /* padding-left: 550px; */
+    right: 2%;
     margin-top: -40px;
     input,
     select {
