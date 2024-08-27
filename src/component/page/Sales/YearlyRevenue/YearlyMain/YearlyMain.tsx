@@ -96,7 +96,7 @@ export const YearlyRevenueMain = () => {
         "#myChart"
       ) as HTMLCanvasElement | null;
       if (canvas) {
-        const ctx = canvas.getContext("2d"); // 이거를 해 줘야지 mixed차트
+        const ctx = canvas.getContext("2d"); 
 
         if (ctx) {
           chartRef.current = new Chart(ctx, {
