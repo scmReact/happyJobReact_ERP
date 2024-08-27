@@ -2,6 +2,9 @@ import { RouteObject, createBrowserRouter } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { DashBoard } from "../component/layout/DashBoard/DashBoard";
 import { NotFound } from "../component/common/NotFound/NotFound";
+
+import { Sales } from "../pages/Sales/Sales";
+
 import { EmpSalePlan } from "../pages/Business/EmpSalePlan";
 
 import { EmpGrade } from "../pages/Employee/EmpGrade";
@@ -58,12 +61,14 @@ const routers: RouteObject[] = [
 
                 children: [{ path: "dailyRevenue.do", element: <DailyRevenue /> },
                            { path: "yearlyRevenue.do", element: <YearlyRevenue /> },
+                           { path: 'monthlyRevenue.do', element: <Sales /> },
  
 
                 ],
             },
         ],
     },
+
 ];
 
 export const Routers = createBrowserRouter(routers);
