@@ -14,6 +14,7 @@ export const AccountingApi = {
     unpaidSearchJson: "/accounting/unpaidSearchJson.do",
     unpaidDetailJson: "/accounting/unpaidDetailJson.do",
     unpaidDepositJson: "/accounting/unpaidDepositJson.do",
+    accSlipSearchJson: "/accounting/accSlipListJson.do",
 };
 
 export const BusinessApi = {

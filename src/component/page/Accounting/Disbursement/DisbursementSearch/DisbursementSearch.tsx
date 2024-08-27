@@ -1,19 +1,16 @@
 import { ChangeEvent, useRef, useState } from "react";
-import { Button } from "../../../common/Button/Button";
-import { DisbApplySearchStyled } from "./styled";
-import { replace, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { modalState } from "../../../../stores/modalState";
+import { Button } from "../../../../common/Button/Button";
+import { DisbursementSearchStyled } from "../styled";
+import { useNavigate } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
-import { ICommonList, ICommonListResponse } from "../../../../models/interface/Accounting/DisbApply";
+import { ICommonList, ICommonListResponse } from "../../../../../models/interface/Accounting/Disbursement";
 
-export const DisbApplySearch = () => {
+export const DisbursementSearch = () => {
     const [startDate, setStartDate] = useState<string>("");
     const [endDate, setEndDate] = useState<string>("");
     const accGroupCode = useRef<HTMLSelectElement>(null);
     const accDetailCode = useRef<HTMLSelectElement>(null);
     const apprYn = useRef<HTMLSelectElement>(null);
-    const [modal, setModal] = useRecoilState<boolean>(modalState);
     const [commonList, setCommonList] = useState<ICommonList[]>([]);
     const [selected, setSelected] = useState<string>("");
     const navigate = useNavigate();
@@ -27,7 +24,7 @@ export const DisbApplySearch = () => {
         !apprYn.current?.value || query.push(`searchApprYn=${apprYn.current?.value}`);
 
         const queryString = query.length > 0 ? `?${query.join("&")}` : "";
-        navigate(`/react/accounting/disbApply.do${queryString}`);
+        navigate(`/react/accounting/disbursement.do${queryString}`);
     };
 
     const searchCommonList = (selected?: string) => {
@@ -37,10 +34,6 @@ export const DisbApplySearch = () => {
         axios.post("/accounting/commonListJson", param).then((res: AxiosResponse<ICommonListResponse>) => {
             setCommonList(res.data.commonList);
         });
-    };
-
-    const handlerModal = () => {
-        setModal(!modal);
     };
 
     const handlerSelect = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -59,33 +52,40 @@ export const DisbApplySearch = () => {
 
     return (
         <div className={"searchArea"}>
-            <DisbApplySearchStyled>
-                신청일자&nbsp;
-                <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input> ~ &nbsp;
-                <input type="date" value={endDate} onChange={handlerEndDate}></input>
-                계정대분류명&nbsp;
-                <select className={"selectbox"} value={selected} onChange={handlerSelect} ref={accGroupCode}>
-                    <option value={""}>전체</option>
-                    <option value={"acc_sales_code"}>매출</option>
-                    <option value={"acc_sell_admin_code"}>판매관리비</option>
-                </select>
-                계정과목&nbsp;
-                <select className={"selectbox"} ref={accDetailCode}>
-                    <option value={""}>전체</option>
-                    {commonList.map((a) => {
-                        return <option value={a.dtl_cod}>{a.dtl_cod_nm}</option>;
-                    })}
-                </select>
-                승인여부&nbsp;
-                <select className={"selectbox"} ref={apprYn}>
-                    <option value={"ALL"}>전체</option>
-                    <option value={"W"}>승인대기</option>
-                    <option value={"Y"}>승인</option>
-                    <option value={"N"}>반려</option>
-                </select>
+            <DisbursementSearchStyled>
+                <label>
+                    신청일자
+                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}></input> ~ {""}
+                    <input type="date" value={endDate} onChange={handlerEndDate}></input>
+                </label>
+                <label>
+                    계정대분류명
+                    <select className={"selectbox"} value={selected} onChange={handlerSelect} ref={accGroupCode}>
+                        <option value={""}>전체</option>
+                        <option value={"acc_sales_code"}>매출</option>
+                        <option value={"acc_sell_admin_code"}>판매관리비</option>
+                    </select>
+                </label>
+                <label>
+                    계정과목
+                    <select className={"selectbox"} ref={accDetailCode}>
+                        <option value={""}>전체</option>
+                        {commonList.map((a) => {
+                            return <option value={a.dtl_cod}>{a.dtl_cod_nm}</option>;
+                        })}
+                    </select>
+                </label>
+                <label>
+                    승인여부
+                    <select className={"selectbox"} ref={apprYn}>
+                        <option value={"ALL"}>전체</option>
+                        <option value={"W"}>승인대기</option>
+                        <option value={"Y"}>승인</option>
+                        <option value={"N"}>반려</option>
+                    </select>
+                </label>
                 <Button onClick={handlerSearch}>검색</Button>
-                <Button onClick={handlerModal}>등록</Button>
-            </DisbApplySearchStyled>
+            </DisbursementSearchStyled>
         </div>
     );
 };

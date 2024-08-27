@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import ReactModal from "react-modal";
 
-export const DisbApplyModalStyled = styled(ReactModal)`
+export const DisbursementDetailModalStyled = styled(ReactModal)`
     width: 100%;
     height: 100%;
     display: flex;
@@ -63,7 +63,7 @@ export const DisbApplyModalStyled = styled(ReactModal)`
     }
 `;
 
-export const DisbApplySearchStyled = styled.div`
+export const DisbursementSearchStyled = styled.div`
     margin-bottom: 10px;
     margin-top: 60px;
     margin-left: -450px;
@@ -78,9 +78,14 @@ export const DisbApplySearchStyled = styled.div`
         margin-right: 5px;
         border-radius: 4px;
         border: 1px solid #ccc;
+        margin-left: 5px;
     }
 
     .selectbox {
+        margin-right: 10px;
+    }
+
+    label {
         margin-right: 10px;
     }
 `;

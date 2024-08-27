@@ -1,36 +1,36 @@
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { modalState } from "../../../../stores/modalState";
+import { modalState } from "../../../../../stores/modalState";
 import { useRecoilState } from "recoil";
-import { StyledTable, StyledTd, StyledTh } from "../../../common/styled/StyledTable";
-import { PageNavigate } from "../../../common/pageNavigation/PageNavigate";
-import { Protal } from "../../../common/potal/Portal";
-import { DisbApplyDetailModal } from "./DisbApplyDetailModal";
-import { IDisbApplyList, IDisbApplyListResponse } from "../../../../models/interface/Accounting/DisbApply";
+import { StyledTable, StyledTd, StyledTh } from "../../../../common/styled/StyledTable";
+import { PageNavigate } from "../../../../common/pageNavigation/PageNavigate";
+import { Protal } from "../../../../common/potal/Portal";
+import { DisbursementDetailModal } from "../DisbursementDetailModal/DisbursementDetailModal";
+import { IDisbApprList, IDisbApprListResponse } from "../../../../../models/interface/Accounting/Disbursement";
 
-export const DisbApplyMain = () => {
+export const DisbursementMain = () => {
     const { search } = useLocation();
-    const [disbApplyList, setDisbApplyList] = useState<IDisbApplyList[]>([]);
-    const [disbApplyListCount, setDisbApplyListCount] = useState<number>(0);
+    const [disbApprList, setDisbApprList] = useState<IDisbApprList[]>([]);
+    const [disbApprListCount, setDisbApprListCount] = useState<number>(0);
     const [modal, setModal] = useRecoilState<boolean>(modalState);
     const [currentParam, setCurrentParam] = useState<number | undefined>();
     const [resoNum, setResoNum] = useState<number | undefined>();
 
     useEffect(() => {
-        searchDisbApplyList();
+        searchDisbApprList();
     }, [search]);
 
-    const searchDisbApplyList = (cpage?: number) => {
+    const searchDisbApprList = (cpage?: number) => {
         cpage = cpage || 1;
         const searchParam = new URLSearchParams(search);
 
         searchParam.append("cpage", cpage.toString());
         searchParam.append("pageSize", "10");
 
-        axios.post("/accounting/disbListJson", searchParam).then((res: AxiosResponse<IDisbApplyListResponse>) => {
-            setDisbApplyList(res.data.disbList);
-            setDisbApplyListCount(res.data.disbCnt);
+        axios.post("/accounting/disbApprListJson", searchParam).then((res: AxiosResponse<IDisbApprListResponse>) => {
+            setDisbApprList(res.data.disbApprList);
+            setDisbApprListCount(res.data.disbApprCnt);
             setCurrentParam(cpage);
         });
     };
@@ -42,7 +42,7 @@ export const DisbApplyMain = () => {
 
     const postSuccess = () => {
         setModal(!modal);
-        searchDisbApplyList();
+        searchDisbApprList();
     };
 
     return (
@@ -61,8 +61,8 @@ export const DisbApplyMain = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {disbApplyList.length > 0 ? (
-                        disbApplyList?.map((a) => {
+                    {disbApprList.length > 0 ? (
+                        disbApprList?.map((a) => {
                             return (
                                 <tr
                                     key={a.resoNum}
@@ -91,18 +91,18 @@ export const DisbApplyMain = () => {
                 </tbody>
             </StyledTable>
             <PageNavigate
-                totalItemsCount={disbApplyListCount}
-                onChange={searchDisbApplyList}
+                totalItemsCount={disbApprListCount}
+                onChange={searchDisbApprList}
                 itemsCountPerPage={10}
                 activePage={currentParam as number}
             ></PageNavigate>
             {modal ? (
                 <Protal>
-                    <DisbApplyDetailModal
+                    <DisbursementDetailModal
                         resoNum={resoNum}
                         onSuccess={postSuccess}
                         setResoNum={setResoNum}
-                    ></DisbApplyDetailModal>
+                    ></DisbursementDetailModal>
                 </Protal>
             ) : null}
         </>

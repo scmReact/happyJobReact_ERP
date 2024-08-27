@@ -1,7 +1,7 @@
-import styled from "styled-components";
 import ReactModal from "react-modal";
+import styled from "styled-components";
 
-export const DisbApplyModalStyled = styled(ReactModal)`
+export const AccSlipModalStyled = styled(ReactModal)`
     width: 100%;
     height: 100%;
     display: flex;
@@ -25,7 +25,7 @@ export const DisbApplyModalStyled = styled(ReactModal)`
 
     .wrap {
         display: flex;
-        min-width: 1000px;
+        min-width: 304px;
         padding: 16px;
         justify-content: center;
         align-items: center;
@@ -35,52 +35,51 @@ export const DisbApplyModalStyled = styled(ReactModal)`
         flex-direction: column;
     }
 
-    input[type="text"],
-    input[type="date"],
-    select {
+    .divCustName {
+        display: flex;
+        padding: 7px;
+        margin-right: auto;
+    }
+
+    input[type="text"] {
         padding: 8px;
         margin-top: 5px;
         margin-bottom: 5px;
         border-radius: 4px;
         border: 1px solid #ccc;
-        width: 100px;
+        width: 150px;
     }
 
-    tbody tr:hover {
-        background-color: #ffffff;
-        opacity: 1;
-        cursor: default;
-    }
-
-    textarea {
-        width: 100%;
-        height: 100px;
-        resize: none;
-    }
-
-    span.font_red {
-        color: red;
+    Button {
+        height: 40px;
+        display: flex;
+        align-items: center;
     }
 `;
 
-export const DisbApplySearchStyled = styled.div`
-    margin-bottom: 10px;
-    margin-top: 60px;
-    margin-left: -450px;
-    float: right;
+export const AccSlipModalTableStyled = styled.table`
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    width: 600px;
 
-    input,
-    select {
-        width: 100px;
+    th,
+    td {
         padding: 8px;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        margin-right: 5px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
+        border: 1px solid #ddd;
     }
 
-    .selectbox {
-        margin-right: 10px;
+    th {
+        background-color: #2676bf;
+        color: #ddd;
+    }
+
+    td {
+        padding-left: 15px;
+    }
+
+    .thTotal {
+        background-color: #ffffff;
+        color: #000;
+        padding-left: 15px;
     }
 `;

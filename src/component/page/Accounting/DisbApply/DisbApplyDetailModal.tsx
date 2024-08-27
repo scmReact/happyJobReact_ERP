@@ -6,71 +6,23 @@ import { DisbApplyModalStyled } from "./styled";
 import { StyledTable, StyledTd, StyledTh } from "../../../common/styled/StyledTable";
 import { Button } from "../../../common/Button/Button";
 import NoImage from "../../../../assets/noImage.jpg";
+import { TypeNullCheck, nullCheck } from "../../../../common/nullCheck";
+import {
+    IDisbApplyDetailModal,
+    IDisbApplyDetailModalResponse,
+    IUserInfo,
+    IUserInfoResponse,
+    ICommonList,
+    ICommonListResponse,
+    ICustList,
+    ICustListResponse,
+    IPostResponse,
+} from "../../../../models/interface/Accounting/DisbApply";
 
 export interface IDisbApplyDetailModalProps {
     resoNum?: number;
     onSuccess: () => void;
     setResoNum: (resoNum: undefined) => void;
-}
-
-export interface IDisbApplyDetailModal {
-    resoNum: number;
-    applyId: string;
-    applyName: string;
-    applyDept: string;
-    custId: number;
-    custName: string;
-    groupCode: string;
-    grCodeNm: string;
-    acctCode: string;
-    acctCodeNm: string;
-    applyDate: string;
-    useDate: string;
-    disbContent: string;
-    amount: string;
-    apprYn: string;
-    apprDate: string;
-    eviMaterial: string;
-    phsycalPath: string;
-    logicalPath: string;
-    fileSize: number;
-    fileExt: string;
-}
-
-export interface IDisbApplyDetailModalResponse {
-    disbDetail: IDisbApplyDetailModal;
-}
-
-export interface IPostResponse {
-    result: string;
-}
-
-export interface IUserInfo {
-    loginId: string;
-    name: string;
-    deptName: string;
-}
-
-export interface IUserInfoResponse {
-    userInfo: IUserInfo;
-}
-
-export interface ICommonList {
-    dtl_cod: string;
-    dtl_cod_nm: string;
-}
-
-export interface ICommonListResponse {
-    commonList: ICommonList[];
-}
-
-export interface ICustList {
-    custId: number;
-    custName: string;
-}
-
-export interface ICustListResponse {
-    custList: ICustList[];
 }
 
 export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, onSuccess, setResoNum }) => {
@@ -93,6 +45,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
     const [imageUrl, setImageUrl] = useState<string>("notImage");
     const [fileData, setFileData] = useState<File>();
     const [applyDate, setApplyDate] = useState<string>();
+    const [useDate, setUseDate] = useState<string>();
     const [applyId, setApplyId] = useState<string>();
     const [applyName, setApplyName] = useState<string>();
     const [applyDept, setApplyDept] = useState<string>();
@@ -155,6 +108,19 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
             apprDate: apprDate.current?.value,
             disbContent: content.current?.value,
         };
+
+        // 필수값 체크
+        const checklist: TypeNullCheck[] = [
+            { inval: textData.useDate, msg: "사용일자를 선택해주세요" },
+            { inval: grCodeNm.current?.value, msg: "계정대분류명을 선택해주세요" },
+            { inval: textData.selAcctCode, msg: "계정과목을 선택해주세요" },
+            { inval: textData.custId, msg: "거래처명을 선택해주세요" },
+            { inval: textData.amount, msg: "결의금액을 선택해주세요" },
+        ];
+        if (!nullCheck(checklist)) {
+            return;
+        }
+
         if (fileData) fileForm.append("file", fileData);
         fileForm.append("text", new Blob([JSON.stringify(textData)], { type: "application/json" }));
         axios.post("/accounting/saveDisbJson.do", fileForm).then((res: AxiosResponse<IPostResponse>) => {
@@ -236,9 +202,18 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
         });
     };
 
-    const handlerSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    const handlerGrCodeNmSelect = (e: ChangeEvent<HTMLSelectElement>) => {
         setSelected(e.target.value);
         searchCommonList(e.target.value);
+    };
+
+    const handlerUseDate = (e: ChangeEvent<HTMLInputElement>) => {
+        if (fomatDate() >= e.target.value) {
+            alert("사용일자를 신청일자 이후로 설정해주세요");
+            setUseDate("");
+        } else {
+            setUseDate(e.target.value);
+        }
     };
 
     return (
@@ -275,13 +250,14 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
                                 <StyledTd>
                                     <input
                                         type="date"
-                                        defaultValue={disbApplyDetail?.useDate}
+                                        value={useDate}
                                         ref={uDate}
                                         style={
                                             resoNum === undefined
                                                 ? { width: 100 }
                                                 : { width: 100, background: "#e3e6e6" }
                                         }
+                                        onChange={handlerUseDate}
                                         disabled={resoNum !== undefined}
                                     />
                                 </StyledTd>
@@ -326,7 +302,7 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
                                     {!resoNum ? (
                                         <select
                                             value={selected}
-                                            onChange={handlerSelect}
+                                            onChange={handlerGrCodeNmSelect}
                                             style={{ width: 120 }}
                                             ref={grCodeNm}
                                         >
@@ -351,6 +327,9 @@ export const DisbApplyDetailModal: FC<IDisbApplyDetailModalProps> = ({ resoNum, 
                                 <StyledTd>
                                     {!resoNum ? (
                                         <select ref={acctCodeNm} style={{ width: 120 }}>
+                                            <option value={""} disabled selected>
+                                                선택
+                                            </option>
                                             {commonList.map((a) => {
                                                 return <option value={a.dtl_cod}>{a.dtl_cod_nm}</option>;
                                             })}
