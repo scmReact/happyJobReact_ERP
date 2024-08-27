@@ -104,7 +104,7 @@ export const DisbursementDetailModal: FC<IDisbursementDetailModalProps> = ({ res
 
         param.append("resoNum", resoNum?.toString() as string);
         param.append("apprYn", disbApprDetail.apprYn);
-        param.append("apprDate", disbApprDetail.apprDate);
+        param.append("apprDate", fomatDate());
         param.append("disbContent", disbContent?.toString() as string);
 
         axios.post("/accounting/updateDisb.do", param).then((res: AxiosResponse<IPostResponse>) => {
